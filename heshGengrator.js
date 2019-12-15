@@ -1,16 +1,18 @@
-var mysql = require('mysql');
-//var source=require('./source');
-var con = mysql.createConnection({
-    host: source.host,
-    user: source.userName,
-    passowrd: source.password,
-    database: source.dbName,
-    WebSocket: "C:/xampp/mysql/mysql.sock",
-});
+//var mysql = require('mysql');
 
+// var con = mysql.createConnection({
+//     host: source.host,
+//     user: source.userName,
+//     passowrd: source.password,
+//     database: source.dbName,
+//   port: source.port 
+  
+// });
+var source=require('./source');
+var con=source.dbConnection;
 con.connect(function (err) {
     if (err) throw err;
-
+-
     console.log("connected");
 
 
