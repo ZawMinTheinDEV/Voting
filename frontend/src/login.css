@@ -1,0 +1,61 @@
+:root {
+    box-sizing: border-box;
+}
+body {
+    background-color: rgba(221, 232, 233,0.6);
+}
+.loginBox {
+    width: 80%;
+    height: 300px;
+    margin:120px auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+    position: relative;
+    border-radius: 0.4em;           
+}
+
+.loginForm {
+    margin-top: 5.5em;
+    padding: 0.5em;
+}
+
+.loginForm > input {
+    border: 0;
+}
+
+.loginForm > .keyInput {
+    width: 100%;
+    padding: 0.5em 0.3em;
+    border: 0;
+    border-bottom: 1px solid gray;
+    display: flex;
+    font-size: 17px;
+    text-align: center;
+    font-family: 'Arial','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.loginForm > * + * {
+    margin-top: 1.3em;
+}
+
+.techClub {
+    widows: 125px;
+    height: 125px;
+    position: absolute;
+    top: -4.3em;
+}
+
+
+.loginForm > .submitButton {
+    width: 10em;
+    height: 2.2em;
+    background-color: rgba(108, 245, 251, 0.5);
+    border: 0;
+    border-radius: 0.3em;
+    color: black;
+    font-size: 1.2rem;
+    align-self: center;
+}

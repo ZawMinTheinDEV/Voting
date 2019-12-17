@@ -1,0 +1,60 @@
+:root {
+    box-sizing: border-box;
+}
+body {
+    background-color: rgba(221, 232, 233,0.6);
+}
+.feedbackBox {
+    width: 80%;
+    height: 450px;
+    margin:120px auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1em;
+    position: relative;
+    border-radius: 0.4em;           
+}
+
+.feedbackForm {
+    margin-top: 5.5em;
+    padding: 0.5em;
+}
+
+.feedbackForm > input {
+    border: 0;
+}
+
+.feedbackForm > .feedbackInput {
+    width: 100%;
+    height: 200px;
+    padding: 0.5em 0.3em;
+    border: 2px solid lightblue;
+    display: flex;
+    font-size: 17px;
+    font-family: 'Arial','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.feedbackForm > * + * {
+    margin-top: 1.3em;
+}
+
+.techClub {
+    widows: 125px;
+    height: 125px;
+    position: absolute;
+    top: -4.3em;
+}
+
+
+.feedbackForm > .submitButton {
+    width: 10em;
+    height: 2.2em;
+    background-color: rgba(108, 245, 251, 0.5);
+    border: 0;
+    border-radius: 0.3em;
+    color: black;
+    font-size: 1.2rem;
+    align-self: center;
+}
