@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { Route, NavLink,HashRouter } from 'react-router-dom';
-//import axios from 'axios';
 import './App.css';
-
+import '../node_modules/aos/dist/aos.css'
+import AOS from 'aos';
 
 class App extends Component {
 
     constructor(props){
         super(props);
+        AOS.init();
         this.state={ list:[] };
     }
     
-   
+    componentWillReceiveProps(){
+        AOS.refresh();
+    }
     
+    onClick=(id,title)=>{
+        localStorage.setItem('targetId',id);
+        localStorage.setItem('targetCategoryName',title);
+    } 
 
     componentDidMount(){
 
@@ -26,6 +33,7 @@ class App extends Component {
               })
           }
       )
+
       
     }
     
@@ -46,7 +54,7 @@ class App extends Component {
                    <NavLink  className="login-btn" id="login-btn" to="./login">Log in to vote</NavLink>
                             
                          {   this.state.list.map((list)=>(
-                                <div key={list.cid} className="categories">
+                                <div key={list.cid} className="categories" data-aos="fade-right"  onClick={()=>this.onClick(list.cid,list.name)}>
                                 <NavLink  to="./participants">
                                 <div>
                                    <img src={list.image} /> 
@@ -57,6 +65,9 @@ class App extends Component {
                                 </NavLink>
                                 </div>
                             ))
+                        }
+                        {
+                            console.log(this.state.list.length)
                         }
 
                     <div className="footer">

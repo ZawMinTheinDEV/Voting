@@ -6,7 +6,7 @@ body {
 }
 .loginBox {
     width: 80%;
-    height: 300px;
+    height: 400px;
     margin:120px auto;
     background-color: white;
     display: flex;
@@ -59,3 +59,50 @@ body {
     font-size: 1.2rem;
     align-self: center;
 }
+
+
+.box{
+  position: fixed; 
+  z-index: 1; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+.box > .success{
+  background-color: #fefefe;
+  margin: 50% auto; 
+  padding: 20px;
+  padding-top: 40px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 10px;
+}
+
+.success > .home{
+    background-color:#245dc7;
+	border-radius:10px;
+	border:2px solid #c4c1d1;
+	display:block;
+	cursor:pointer;
+	color:#fafafa;
+	font-family:Arial;
+	font-size:17px;
+	padding:9px 39px;
+	text-decoration:none;
+    text-shadow:0px 1px 0px #d8e0d7;
+    width:20%;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.loginForm > .fail{
+    font-size:17px;
+    color: rgb(241, 52, 52);
+    display: block;
+}
+

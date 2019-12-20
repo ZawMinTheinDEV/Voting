@@ -7,11 +7,11 @@ const app = express();
 const multer = require('multer');
 app.use(cors())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-  });
+});
 const con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -133,41 +133,83 @@ app.get('/participant', (req, res, next) => {
     con.query(sql, (err, result, fields) => {
         if (err) throw err;
         console.log(typeof result);
+        console.log(result);
         res.status(200).json({
             result
         });
     });
+
+    res.end;
 });
 
+app.post('/vote', function (req, res) {
+    var pid = req.body.pid;
+    var code = req.body.code;
+    var cid = req.body.cid;
+    var check = 'select voter.' + cid + ' from voter where code=?  and voter.' + cid + '="active"';
+    //console.log(check);
+    con.query(check, [code], function (err, results) {
+        if (err) throw err;
+        if (results.length > 0) {
 
+            //increse vote_count for a specific code
+            var increse = 'UPDATE participant P SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
+
+            con.query(increse, [pid], function (err, results) {
+                if (err) throw err;
+                res.send("true");
+                console.log("incremented");
+            });
+            // mark the code so it can't be used again
+            var mark = 'UPDATE voter SET voter.' + cid + '=? where voter.code=?;';
+            con.query(mark, [pid, code], function (err, results) {
+                if (err) throw err;
+                console.log("marked");
+            });
+        } else {
+            // throw error is already voted 
+            res.send("alredy voted for this category")
+            console.log(false);
+        }
+        res.end;
+    });
+
+
+})
 
 
 app.get('/login', function (req, res) {
-   console.log(req.query);
-   code = req.query.code;
+    console.log(req.query);
+    code = req.query.code;
     console.log("apple");
-   console.log(code);
+    console.log(code);
     if (code) {
 
         con.query("SELECT code FROM `voter` WHERE code=? ", [code], function (err, results, ) {
             if (err) throw err;
             if (results.length > 0) {
-              
-               res.write("true")
+                console.log(true)
+                res.json({
+                    "result": "true"
+                })
+
 
             } else {
-               
-                res.write("false")
+                console.log(false)
+                res.json({
+                    "result": "false"
+                })
+
             }
 
         });
 
-   
+
     } else {
         res.send('please enter key');
-       
+
     }
- 
+    res.end;
 });
 app.use(express.static(__dirname + 'images'))
 app.listen(5000, 'localhost');

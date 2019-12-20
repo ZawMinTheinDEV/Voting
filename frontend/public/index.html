@@ -38,32 +38,5 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 
-    <script>
-      window.onload = () => {
-
-          window.onscroll = function () {
-              let winScroll = document.documentElement.scrollTop;
-
-              let categories = document.querySelectorAll(".categories");
-              let feedback = document.querySelector(".feedback");
-
-              if (winScroll >= 45) {
-
-                  categories.forEach((e) => {
-                      e.style.opacity = "1";
-                  });
-                  feedback.style.visibility = " visible";
-
-              }
-              else {
-                  feedback.style.visibility = " hidden";
-                  categories.forEach((e) => {
-                      e.style.opacity = "0.7";
-                  });
-              }
-
-          }
-      }
-  </script>
   </body>
 </html>

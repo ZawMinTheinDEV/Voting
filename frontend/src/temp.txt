@@ -1,0 +1,83 @@
+import React, { Component } from 'react';
+import { Route, NavLink, HashRouter } from 'react-router-dom';
+import './login.css';
+
+class login extends Component {
+
+   constructor(props) {
+      super(props);
+      this.state = {
+         code: ''
+      }
+   }
+
+   onChange = (e) => {
+      e.preventDefault();
+      this.setState({
+         code: e.target.value
+      })
+   }
+
+   onSubmit = () => {
+      fetch("http://localhost:5000/login?code=" + this.state.code + "")
+         .then(Response => Response.json())
+         .then((json) => {
+               console.log(JSON);
+               console.log("hellohi bye bye")
+               if (json["result"] == "true") {
+                  localStorage.setItem("auth", "true")
+
+               } else if (json["result"] == "false") {
+                  localStorage.setItem("auth", "false")
+
+               }
+            }
+         )
+
+   }
+
+   render() {
+      if (localStorage.getItem("auth") === "true") {
+         return (
+            <div className="loginBox">
+               <img src="techClub.png" className="techClub" />
+               <form className="loginForm" onSubmit={this.onSubmit} >
+                  <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
+                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.onChange} required />
+                  <div className="success">Login successfully.Back to <NavLink to="/">Home page</NavLink></div>
+                  <input type="submit" className="submitButton" value="Submit" />
+               </form>
+            </div>
+         )
+      }
+      else if (localStorage.getItem("auth") === "false") {
+         return (
+            <div className="loginBox">
+               <img src="techClub.png" className="techClub" />
+               <form className="loginForm" onSubmit={this.onSubmit} >
+                  <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
+                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.onChange} required />
+                  <div className="fail">Login failed. Try again</div>
+                  <input type="submit" className="submitButton" value="Submit" />
+               </form>
+            </div>
+         )
+      } else {
+
+         return (
+            <div className="loginBox">
+               <img src="techClub.png" className="techClub" />
+               <form className="loginForm" onSubmit={this.onSubmit} >
+                  <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
+                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.onChange} required />
+                  <input type="submit" className="submitButton" value="Submit" />
+               </form>
+            </div>
+         )
+      }
+
+   }
+
+}
+
+export default login;
