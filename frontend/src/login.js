@@ -7,7 +7,7 @@ class login extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         code:'',auth:false
+         code:'',auth:''
       }
    }
 
@@ -33,19 +33,18 @@ class login extends Component {
       var data = await res.json();
       console.log(data)
       if(data.result == "true") {
-      this.setState({auth:true}) 
+      this.setState({auth:'true'}) 
       localStorage.setItem("code",this.state.code)
+      localStorage.setItem("auth","true")
        }
        else{ 
-      this.setState({auth:false});
-      localStorage.setItem("code",this.state.code)
+      this.setState({auth:'false'}); 
+      localStorage.setItem("auth","false")
        }
       console.log(this.state.auth)
    }
    
    QRLogin = (url) =>{
-     /////need to change later
-     
       var b = url.substr(33,41);
       document.querySelector('.keyInput').value = b;
       this.setState({code:b});
@@ -53,7 +52,7 @@ class login extends Component {
 
    render() {
 
-      if (this.state.auth) {
+      if (this.state.auth == 'true') {
          return (
             <div className="loginBox">
                <img src="techClub.png" className="techClub" />
@@ -69,6 +68,19 @@ class login extends Component {
             </div>
          )
       }
+      else if(this.state.auth == 'false'){
+         return (
+            <div className="loginBox">
+               <img src="techClub.png" className="techClub" />
+               <form className="loginForm" onSubmit={this.handleSubmit} >
+                  <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
+                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.handleChange} required />
+                  <div className="fail">Wrong code.. Try again!</div>
+                  <input type="submit" className="submitButton" value="Submit" />
+               </form>
+            </div>
+         )
+      } 
       else{
          return (
             <div className="loginBox">
@@ -76,12 +88,11 @@ class login extends Component {
                <form className="loginForm" onSubmit={this.handleSubmit} >
                   <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
                   <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.handleChange} required />
-                  <div className="fail">Type your code carefully!</div>
                   <input type="submit" className="submitButton" value="Submit" />
                </form>
             </div>
          )
-      } 
+      }
 
 
    }

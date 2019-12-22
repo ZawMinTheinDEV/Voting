@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Route, NavLink,HashRouter } from 'react-router-dom';
 import './participants.css';
 import AOS from 'aos';
+import axios from 'axios';
 
 
 class participants extends Component{
@@ -13,7 +14,8 @@ class participants extends Component{
           targetId:'',
           targetName:'',
           olist:[],
-          list:[]
+          list:[],
+          unauth:false
        }
        AOS.init();
    } 
@@ -34,10 +36,59 @@ class participants extends Component{
         }
     )
   }
-
+  
    componentWillReceiveProps(){
        AOS.refresh();
    }
+
+   handleVote =async (cid,pid)=>{
+       if(localStorage.getItem("auth") == "true"){
+           console.log(localStorage.getItem("code"))
+           console.log(cid)
+           console.log(pid)
+          this.postToSErver(cid,pid,localStorage.getItem("code"))
+       }
+       else if(localStorage.getItem("auth") == "false" || localStorage.getItem("auth") == null){
+          this.setState({unauth:true})
+       }
+   }
+   
+   
+   postToSErver =(cid,pid,code)=>{
+    
+    let vote = {
+       pid,cid,code
+    }
+
+    axios
+    .post('http://localhost:5000/vote', vote)
+    .then(() => console.log('vote Created'))
+    .catch(err => {
+      console.error(err);
+    });
+
+    
+
+//        console.log(JSON.stringify({cid,pid,code}))
+//     fetch("http://localhost:5000/vote",{
+       
+
+//        cid, pid ,code
+
+//         // // method: "POST",
+//         // // headers: {
+//         // //     "Content-Type": "application/json"
+//         // //   },
+//         // //body:JSON.stringify({
+//         //     cid, 
+//         //     pid, 
+//         //     code
+//         // })
+//      }).then((res) => console.log(res))
+//      .then((data) =>  console.log(data))
+//      .catch((err)=>console.log(err))
+//    
+}
 
    render(){
        {    
@@ -49,8 +100,7 @@ class participants extends Component{
        return(
         <div> 
              <header>
-               <h1>{this.state.targetName}</h1>
-               
+               <h2>{this.state.targetName}</h2>
              </header>
 
              <div className="container">
@@ -61,11 +111,10 @@ class participants extends Component{
                     <img src={list.image} alt="image"/>
                     <div >
                       <div>{list.name }</div>
-                        <button>Vote</button>
+                        <button onClick={() => this.handleVote(list.cid,list.pid)} >Vote</button>
                     </div >
                     </div>
                 ))
-            
             }
 
              </div>

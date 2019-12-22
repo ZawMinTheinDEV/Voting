@@ -3,9 +3,31 @@ const mysql = require('mysql');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const logger = require('morgan');
 
 const multer = require('multer');
-app.use(cors())
+app.use(
+    cors({
+        origin: 'http://localhost:3000',
+        credentials: true,
+    })
+);
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.set('view engine', 'ejs');
+//app.use(cors);
+app.use(bodyparser.urlencoded({ extended: true }));
+
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+    next();
+});
+
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -19,7 +41,10 @@ const con = mysql.createConnection({
     database: 'voting',
     port: '3306'
 });
-
+con.connect((err) => {
+    if (err) throw err;
+    console.log('Connection established');
+});
 const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
@@ -37,20 +62,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage }).single('image');
-app.set('view engine', 'ejs');
-//app.use(cors);
-app.use(bodyparser.urlencoded({ extended: true }));
-con.connect((err) => {
-    if (err) throw err;
-    console.log('Connection established');
-});
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    next();
-});
 app.get('/category', (req, res, next) => {
     const sql = "SELECT * FROM category";
     con.query(sql, (err, result, fields) => {
@@ -143,72 +155,78 @@ app.get('/participant', (req, res, next) => {
 });
 
 app.post('/vote', function (req, res) {
-    var pid = req.body.pid;
-    var code = req.body.code;
-    var cid = req.body.cid;
-    var check = 'select voter.' + cid + ' from voter where code=?  and voter.' + cid + '="active"';
-    //console.log(check);
-    con.query(check, [code], function (err, results) {
-        if (err) throw err;
-        if (results.length > 0) {
-
-            //increse vote_count for a specific code
-            var increse = 'UPDATE participant P SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
-
-            con.query(increse, [pid], function (err, results) {
-                if (err) throw err;
-                res.send("true");
-                console.log("incremented");
-            });
-            // mark the code so it can't be used again
-            var mark = 'UPDATE voter SET voter.' + cid + '=? where voter.code=?;';
-            con.query(mark, [pid, code], function (err, results) {
-                if (err) throw err;
-                console.log("marked");
-            });
-        } else {
-            // throw error is already voted 
-            res.send("alredy voted for this category")
-            console.log(false);
-        }
-        res.end;
-    });
-
-
-})
-
-
-app.get('/login', function (req, res) {
-    console.log(req.query);
-    code = req.query.code;
-    console.log("apple");
-    console.log(code);
-    if (code) {
-
-        con.query("SELECT code FROM `voter` WHERE code=? ", [code], function (err, results, ) {
+    console.log(req.body);
+        var pid = req.body.pid;
+        var code = req.body.code;
+        var cid = req.body.cid;
+        var check = 'select voter.' + cid + ' from voter where code=?  and voter.' + cid + '="active"';
+        //console.log(check);
+        con.query(check, [code], function (err, results) {
             if (err) throw err;
             if (results.length > 0) {
-                console.log(true)
+
+                //increse vote_count for a specific code
+                var increse = 'UPDATE participant P SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
+                con.query(increse, [pid], function (err, results) {
+                    if (err) throw err;
+                    res.json({
+                        "result": "true"
+                    })
+                    console.log("incremented");
+                });
+
+                // mark the code so it can't be used again
+                var mark = 'UPDATE voter SET voter.' + cid + '=? where voter.code=?;';
+                con.query(mark, [pid, code], function (err, results) {
+                    if (err) throw err;
+                    console.log("marked");
+                });
+            } else {
+                // throw error is already voted 
                 res.json({
                     "result": "true"
                 })
-
-
-            } else {
-                console.log(false)
-                res.json({
-                    "result": "false"
-                })
-
+                res.send("alredy voted for this category")
+                console.log(false);
             }
-
+            res.end;
         });
 
 
-    } else {
-        res.send('please enter key');
+    })
 
-    }
+
+    app.get('/login', function (req, res) {
+        console.log(req.query);
+        code = req.query.code;
+        console.log("apple");
+        console.log(code);
+        if (code) {
+
+            con.query("SELECT code FROM `voter` WHERE code=? ", [code], function (err, results, ) {
+                if (err) throw err;
+                if (results.length > 0) {
+                    console.log(true)
+                    res.json({
+                        "result": "true"
+                    })
+
+
+                } else {
+                    console.log(false)
+                    res.json({
+                        "result": "false"
+                    })
+
+                }
+
+            });
+
+
+        } else {
+            res.send('please enter key');
+
+        }
     res.end;
 });
 app.use(express.static(__dirname + 'images'))

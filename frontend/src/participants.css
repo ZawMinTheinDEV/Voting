@@ -11,10 +11,10 @@ body {
     margin: 0 auto;
     position: relative;
     top: 40px;
-    
+    margin-bottom: 20px;   
 }
 .container > .card + .card {
-    margin-top: 2.5em;
+    margin-top: 1.5em;
 }
 .card  {
     width: 100%;
@@ -30,12 +30,10 @@ body {
     display: flex;
     align-items: center;
     padding: 0.7em;
-    
 }
 .card > div > div {
     flex: 2;
-    font-size: 1em;
-    
+    font-size: 1em; 
 }
 .card > div >button {
     
@@ -60,14 +58,13 @@ header {
     z-index: 2;
     box-shadow: 0 0.2em 0.56em 0.2em rgb(207, 199, 199);
 }
-header > h1 {
+header > h2 {
     margin: 0;
     letter-spacing: 0.1em;
-    padding: 0.5em;
-    /* font-style: italic; */
-    
+    padding: 0.3em;
+    /* font-style: italic; */ 
     font-weight: 100;
-    font-size: 2rem;
+    font-size: 1.3em;
     color:white;
     
 }
