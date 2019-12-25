@@ -156,77 +156,110 @@ app.get('/participant', (req, res, next) => {
 
 app.post('/vote', function (req, res) {
     console.log(req.body);
-        var pid = req.body.pid;
-        var code = req.body.code;
-        var cid = req.body.cid;
-        var check = 'select voter.' + cid + ' from voter where code=?  and voter.' + cid + '="active"';
-        //console.log(check);
-        con.query(check, [code], function (err, results) {
-            if (err) throw err;
-            if (results.length > 0) {
+    var pid = req.body.pid;
+    var code = req.body.code;
+    var cid = req.body.cid;
+    var check = 'select voter.' + cid + ' from voter where code=?  and voter.' + cid + '="active"';
+    //console.log(check);
+    con.query(check, [code], function (err, results) {
+        if (err) throw err;
+        if (results.length > 0) {
 
-                //increse vote_count for a specific code
-                var increse = 'UPDATE participant P SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
-                con.query(increse, [pid], function (err, results) {
-                    if (err) throw err;
-                    res.json({
-                        "result": "true"
-                    })
-                    console.log("incremented");
-                });
-
-                // mark the code so it can't be used again
-                var mark = 'UPDATE voter SET voter.' + cid + '=? where voter.code=?;';
-                con.query(mark, [pid, code], function (err, results) {
-                    if (err) throw err;
-                    console.log("marked");
-                });
-            } else {
-                // throw error is already voted 
+            //increse vote_count for a specific code
+            var increse = 'UPDATE participant P SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
+            con.query(increse, [pid], function (err, results) {
+                if (err) throw err;
                 res.json({
                     "result": "true"
                 })
-                res.send("alredy voted for this category")
-                console.log(false);
+                console.log("incremented");
+            });
+
+            // mark the code so it can't be used again
+            var mark = 'UPDATE voter SET voter.' + cid + '=? where voter.code=?;';
+            con.query(mark, [pid, code], function (err, results) {
+                if (err) throw err;
+                console.log("marked");
+            });
+        } else {
+            // throw error is already voted 
+            res.json({
+                "result": "false"
+            })
+
+            console.log(false);
+        }
+        res.end;
+    });
+
+
+})
+
+
+app.get('/login', function (req, res) {
+    console.log(req.query);
+    code = req.query.code;
+    console.log("apple");
+    console.log(code);
+    if (code) {
+
+        con.query("SELECT code FROM `voter` WHERE code=? ", [code], function (err, results, ) {
+            if (err) throw err;
+            if (results.length > 0) {
+                console.log(true)
+                res.json({
+                    "result": "true"
+                })
+
+
+            } else {
+                console.log(false)
+                res.json({
+                    "result": "false"
+                })
+
             }
-            res.end;
+
         });
 
 
-    })
+    } else {
+        res.send('please enter key');
+
+    }
+    res.end;
+});
+app.post('/deletevote', function (req, res) {
+    var code = req.body.code;
+    var cid = req.body.cid;
+    console.log(code + cid)
+    if (code) {
+
+        //check if the code is already used
+        var decrese = 'UPDATE voter V ,participant p   SET p.vote_count =p.vote_count-1 WHERE p.pid=v.' + cid + ' AND v.code=?';
+        //console.log(check);
+        con.query(decrese, [code], function (err, results) {
+            if (err) throw err;
 
 
-    app.get('/login', function (req, res) {
-        console.log(req.query);
-        code = req.query.code;
-        console.log("apple");
-        console.log(code);
-        if (code) {
 
-            con.query("SELECT code FROM `voter` WHERE code=? ", [code], function (err, results, ) {
-                if (err) throw err;
-                if (results.length > 0) {
-                    console.log(true)
-                    res.json({
-                        "result": "true"
-                    })
-
-
-                } else {
-                    console.log(false)
-                    res.json({
-                        "result": "false"
-                    })
-
-                }
-
+            // mark the code so it can't be used again
+            var mark = 'UPDATE voter SET voter.' + cid + '="active" where voter.code=?;';
+            con.query(mark, [code], function (err, results) {
+                res.json({
+                    "result": "true"
+                })
             });
 
+        });
 
-        } else {
-            res.send('please enter key');
 
-        }
+    } else {
+        res.json({
+            "result": "false"
+        })
+
+    }
     res.end;
 });
 app.use(express.static(__dirname + 'images'))

@@ -14,8 +14,7 @@ class participants extends Component{
           targetId:'',
           targetName:'',
           olist:[],
-          list:[],
-          unauth:false
+          list:[]
        }
        AOS.init();
    } 
@@ -41,15 +40,22 @@ class participants extends Component{
        AOS.refresh();
    }
 
-   handleVote =async (cid,pid)=>{
+   handleVote =(cid,pid)=>{
        if(localStorage.getItem("auth") == "true"){
-           console.log(localStorage.getItem("code"))
-           console.log(cid)
-           console.log(pid)
           this.postToSErver(cid,pid,localStorage.getItem("code"))
+          
+          setTimeout(()=>{
+          if(localStorage.getItem("voted") == "false"){
+          document.querySelector('.box4').style.visibility = 'visible';
+          }
+          else{
+          document.querySelector('.box3').style.visibility = 'visible';
+          }
+        },500)
+
        }
        else if(localStorage.getItem("auth") == "false" || localStorage.getItem("auth") == null){
-          this.setState({unauth:true})
+            document.querySelector('.box2').style.visibility = 'visible';
        }
    }
    
@@ -59,36 +65,35 @@ class participants extends Component{
     let vote = {
        pid,cid,code
     }
-
-    axios
+    
+     axios
     .post('http://localhost:5000/vote', vote)
-    .then(() => console.log('vote Created'))
+    .then((res) =>  //console.log(res.data.result)
+       localStorage.setItem("voted",res.data.result)
+    )
     .catch(err => {
       console.error(err);
     });
+   
+   }
 
-    
+   handleDeleteVote = (code,cid) =>{
+      
+    document.querySelector('.box4').style.visibility = 'hidden';
 
-//        console.log(JSON.stringify({cid,pid,code}))
-//     fetch("http://localhost:5000/vote",{
-       
+      let d = {
+          code,cid
+      }
+     console.log(d)
+      axios
+      .post('http://localhost:5000/deletevote',d)
+      .then((res) => console.log(res)
+      )
+      .catch( err => {
+          console.log(err)
+      })
 
-//        cid, pid ,code
-
-//         // // method: "POST",
-//         // // headers: {
-//         // //     "Content-Type": "application/json"
-//         // //   },
-//         // //body:JSON.stringify({
-//         //     cid, 
-//         //     pid, 
-//         //     code
-//         // })
-//      }).then((res) => console.log(res))
-//      .then((data) =>  console.log(data))
-//      .catch((err)=>console.log(err))
-//    
-}
+   }
 
    render(){
        {    
@@ -107,7 +112,7 @@ class participants extends Component{
         
              {
                 this.state.list.map( list =>(
-                    <div key={list.pid} className="card" data-aos="fade-right">
+                    <div key={list.pid.toString()} className="card" data-aos="fade-right">
                     <img src={list.image} alt="image"/>
                     <div >
                       <div>{list.name }</div>
@@ -118,7 +123,23 @@ class participants extends Component{
             }
 
              </div>
+            
+             <div className="box2">
+             <div className="fail">Please Login to vote <NavLink to="/login" className="home">OK</NavLink></div>
+            </div>
 
+             <div className="box3">
+             <div className="success">Voted successfully ! <NavLink to="/" className="home">OK</NavLink></div>
+             </div>
+
+             <div className="box4">
+             <div className="cancel">
+                 You have voted this category. Do you want to cancel vote?
+             <NavLink to="/" className="home">Back</NavLink>
+             <button className="btn" onClick={() => this.handleDeleteVote(localStorage.getItem("code"),this.state.targetId)}>Cancel Vote</button>
+             </div>
+             </div>
+             
         </div>
        )
    }

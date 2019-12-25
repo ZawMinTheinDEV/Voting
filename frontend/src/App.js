@@ -21,7 +21,7 @@ class App extends Component {
         localStorage.setItem('targetCategoryName',title);
     } 
 
-    componentDidMount(){
+    componentDidMount(){  
 
       fetch("http://localhost:5000/category")
       .then(res=>res.json())
@@ -40,7 +40,7 @@ class App extends Component {
 
 
     render() {
-
+        
         return (
 
             <div>
