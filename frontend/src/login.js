@@ -26,7 +26,7 @@ class login extends Component {
 
       e.preventDefault();
 
-      var res = await fetch("http://localhost:5000/login?code="+this.state.code , {
+      var res = await fetch("http://172.26.4.31:5000/login?code="+this.state.code , {
          method: "GET"
       }); 
       

@@ -4,11 +4,11 @@ const bodyparser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const logger = require('morgan');
-
+//4dQXoIMKSjua
 const multer = require('multer');
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: 'http://172.26.4.31:3000',
         credentials: true,
     })
 );
@@ -35,9 +35,9 @@ app.use(function (req, res, next) {
     next();
 });
 const con = mysql.createConnection({
-    host: 'localhost',
+    host: '52.76.67.93',
     user: 'root',
-    passowrd: 'root',
+    passowrd: '',
     database: 'voting',
     port: '3306'
 });
@@ -166,7 +166,7 @@ app.post('/vote', function (req, res) {
         if (results.length > 0) {
 
             //increse vote_count for a specific code
-            var increse = 'UPDATE participant P SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
+            var increse = 'UPDATE participant p SET p.vote_count =p.vote_count+1 WHERE p.pid=?;';
             con.query(increse, [pid], function (err, results) {
                 if (err) throw err;
                 res.json({
@@ -236,7 +236,7 @@ app.post('/deletevote', function (req, res) {
     if (code) {
 
         //check if the code is already used
-        var decrese = 'UPDATE voter V ,participant p   SET p.vote_count =p.vote_count-1 WHERE p.pid=v.' + cid + ' AND v.code=?';
+        var decrese = 'UPDATE voter v ,participant p   SET p.vote_count =p.vote_count-1 WHERE p.pid=v.' + cid + ' AND v.code=?';
         //console.log(check);
         con.query(decrese, [code], function (err, results) {
             if (err) throw err;

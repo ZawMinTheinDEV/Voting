@@ -23,7 +23,7 @@ class participants extends Component{
     
     this.state.targetId = localStorage.getItem('targetId');
     this.state.targetName = localStorage.getItem('targetCategoryName');
-    await fetch("http://localhost:5000/participant")
+    await fetch("http://172.26.4.31:5000/participant")
     .then(res=>res.json())
     .then(
         json=>{
@@ -67,7 +67,7 @@ class participants extends Component{
     }
     
      axios
-    .post('http://localhost:5000/vote', vote)
+    .post('http://172.26.4.31:5000/vote', vote)
     .then((res) =>  //console.log(res.data.result)
        localStorage.setItem("voted",res.data.result)
     )
@@ -86,7 +86,7 @@ class participants extends Component{
       }
      console.log(d)
       axios
-      .post('http://localhost:5000/deletevote',d)
+      .post('http://172.26.4.31:5000/deletevote',d)
       .then((res) => console.log(res)
       )
       .catch( err => {

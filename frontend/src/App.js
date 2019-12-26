@@ -23,7 +23,7 @@ class App extends Component {
 
     componentDidMount(){  
 
-      fetch("http://localhost:5000/category")
+      fetch("http://172.26.4.31:5000/category")
       .then(res=>res.json())
       .then(
           json=>{
