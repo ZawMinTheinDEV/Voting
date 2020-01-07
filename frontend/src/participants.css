@@ -1,14 +1,15 @@
-:root {
+/* :root {
     font-size: calc(1vw + 0.68em);
-}
+} */
 body {
-    margin: 0;
     background-color: rgba(221, 232, 233,0.6);
-    font-size: calc(1vw + 1em);
+    /* font-size: calc(1vw + 1em); */
+    margin:0;
+    font-family: 'Poppins', sans-serif;
 }
 .container {
     width: 85%;
-    margin: 0 auto;
+    margin: 50px auto;
     position: relative;
     top: 40px;
     margin-bottom: 20px;   
@@ -21,10 +22,14 @@ body {
     text-align: center;
     background: white;
     border-radius: 0.3em;
+    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2);
+    font-size:22px;
 }
 .card > img {
     width: 100%;
-    height: 50vh;
+    height: 65vh;
+    border-top-right-radius: 0.3em;
+    border-top-left-radius: 0.3em;
 }
 .card > div {
     display: flex;
@@ -35,7 +40,7 @@ body {
     flex: 2;
     font-size: 1em; 
 }
-.card > div >button {
+/* .card > div >button {
     
     padding: 0.2em;
     font-size: 1em;
@@ -48,24 +53,49 @@ body {
     align-self: center;
     flex: 1;
     
+} */
+
+
+.voteBtn{
+    padding: 0.2em;
+    font-size: 1em;
+    background: linear-gradient(to bottom, #48c6ef   0%,  #6f86d6 100%);
+    border: 2px solid#05efef00;
+    border-radius: 1.5em;
+    color: rgb(255, 255, 255);
+    align-self: center;
+    flex: 1;
 }
+
 header {
+    /* #48c6ef  0%,  #6f86d6 */
+    padding: 0.5em ;
     text-align: center;
-    position: relative;
-    background-color: #0780fdbd;
+    position: fixed;
+    background: linear-gradient(to right, #48c6ef   0%,  #6f86d6 100%);
     left: 0;
     right: 0;
+    top: 0;
     z-index: 2;
-    box-shadow: 0 0.2em 0.56em 0.2em rgb(207, 199, 199);
+    box-shadow:0 8px 8px 0 rgba(0, 0, 0, 0.2) ;
+    font-family: 'Lobster', cursive;
 }
+
+header > a{
+    float: left;
+    text-decoration: none;
+    color: white;
+    font-size:30px;
+}
+
 header > h2 {
     margin: 0;
     letter-spacing: 0.1em;
-    padding: 0.3em;
     /* font-style: italic; */ 
     font-weight: 100;
     font-size: 1.3em;
     color:white;
+    display: inline;
     
 }
 
@@ -99,7 +129,6 @@ header > h2 {
       display:block;
       cursor:pointer;
       color:#fafafa;
-      font-family:Arial;
       font-size:17px;
       padding:9px 39px;
       text-decoration:none;
@@ -126,7 +155,6 @@ header > h2 {
       display:block;
       cursor:pointer;
       color:#fafafa;
-      font-family:Arial;
       font-size:17px;
       padding:9px 39px;
       text-decoration:none;
@@ -144,38 +172,49 @@ header > h2 {
     border: 1px solid #888;
     width: 80%;
     border-radius: 10px;
+    font-size: 20px;
   }
   
-  .cancel > .home{
+  .homeCancel{
     background-color:transparent;
     border-radius:10px;
     border:2px solid #818181;
     display:inline-block;
     cursor:pointer;
     color:#2e2d2d;
-    font-family:Arial;
     font-size:17px;
-    padding:7px 25px;
+    padding:7px 10px;
     text-decoration:none;
     text-shadow:0px 1px 0px #d8e0d7;
-    width:10%;
+    width:50px;
     margin-right:20px;
     margin-top: 30px;
   }
 
-  .cancel > .btn{
+  .btnCancel{
     background-color:#d45151;
     border-radius:10px;
     border:2px solid #c4c1d1;
     display:inline-block;
     cursor:pointer;
     color:#fafafa;
-    font-family:Arial;
     font-size:17px;
-    padding:9px 10px;
+    padding:9px;
     text-decoration:none;
     text-shadow:0px 1px 0px #d8e0d7;
     width:150px;
     margin-left: 10px;
     margin-top: 30px;
+  }
+
+  @media (min-width: 900px) {
+    .container{
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      grid-template-rows: repeat(3,1fr);
+      grid-gap:1em;
+      padding-left:10px;
+      padding-right: 10px;
+      top: 100px;
+    }
   }

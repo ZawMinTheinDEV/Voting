@@ -8,7 +8,7 @@ const logger = require('morgan');
 const multer = require('multer');
 app.use(
     cors({
-        origin: 'http://172.26.4.31:3000',
+        origin: 'http://localhost:3000',
         credentials: true,
     })
 );
@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
     next();
 });
 const con = mysql.createConnection({
-    host: '52.76.67.93',
+    host: 'localhost',
     user: 'root',
     passowrd: '',
     database: 'voting',
@@ -50,6 +50,8 @@ const MIME_TYPES = {
     'image/jpeg': 'jpg',
     'image/png': 'png'
 };
+
+//http://52.76.67.93:3000/login
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, '../frontend/public/images');
@@ -262,5 +264,73 @@ app.post('/deletevote', function (req, res) {
     }
     res.end;
 });
+app.post('/quiz', function (req, res) {
+
+    var score = req.body.score;
+    var code = req.body.code;
+    console.log(code + score)
+    if (code) {
+
+        //check if the code is already used
+        var insert = 'INSERT INTO `quiz`(`code`, `score`) VALUES (?,?)';
+        //console.log(check);
+        con.query(insert, [code, score], function (err, results) {
+            if (err) {
+                res.json({
+                    "result": "false"
+                })
+            } else {
+                res.json({
+                    "result": "true"
+                })
+            }
+
+        });
+
+
+    }
+    res.end;
+});
+app.get('/feedback', function (req, res) {
+    console.log(req.query)
+    var feedback = req.query.feedback;
+
+    //check if the code is already used
+    var insert = 'INSERT INTO `feedback`(`feedback`) VALUES (?)';
+    //console.log(check);
+    con.query(insert, [feedback], function (err, results) {
+        if (err) {
+            res.json({
+                "result": "false"
+            })
+        } else {
+            res.json({
+                "result": "true"
+            })
+        }
+
+    });
+
+    res.end;
+});
+app.get('/lucky', function (req, res) {
+    console.log(req.query)
+    var lucky = req.query.lucky;
+
+    //check if the code is already used
+    var select = 'SELECT `LUCKY_number` FROM `voter`WHERE CODE=?';
+    //console.log(check);
+    con.query(select, [lucky], function (err, results) {
+        if (err) throw err;
+        res.json({
+            results
+        }
+        )
+
+    });
+
+    res.end;
+});
+
 app.use(express.static(__dirname + 'images'))
-app.listen(5000, 'localhost');
+app.listen(5000);

@@ -26,10 +26,10 @@ class login extends Component {
 
       e.preventDefault();
 
-      var res = await fetch("http://172.26.4.31:5000/login?code="+this.state.code , {
+      var res = await fetch("http://52.76.67.93:5000/login?code="+this.state.code , {
          method: "GET"
       }); 
-      
+      //http://utc.codes/login?code=zvwnW8gT
       var data = await res.json();
       console.log(data)
       if(data.result == "true") {
@@ -55,11 +55,15 @@ class login extends Component {
       if (this.state.auth == 'true') {
          return (
             <div className="loginBox">
-               <img src="techClub.png" className="techClub" />
+                <div className="back">
+            <NavLink to="/" className="fas fa-arrow-left">
+             </NavLink>
+             </div>
+               <div className="techClub"><img src="tech.png" /></div>
                <form className="loginForm" onSubmit={this.handleSubmit} >
                   <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
-                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.handleChange} required />
-                  <input type="submit" className="submitButton" value="Submit" />
+                  <input type="text" placeholder="Code Here" className="keyInput" name="code" onChange={this.handleChange} required />
+                  <input type="submit" className="submitButton" value="Login" />
                </form>
 
             <div className="box">
@@ -71,12 +75,16 @@ class login extends Component {
       else if(this.state.auth == 'false'){
          return (
             <div className="loginBox">
-               <img src="techClub.png" className="techClub" />
+                <div className="back">
+            <NavLink to="/" className="fas fa-arrow-left">
+             </NavLink>
+             </div>
+              <div className="techClub"><img src="tech.png" /></div>
                <form className="loginForm" onSubmit={this.handleSubmit} >
                   <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
-                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.handleChange} required />
+                  <input type="text" placeholder="Code Here" className="keyInput" name="code" onChange={this.handleChange} required />
                   <div className="fail">Wrong code.. Try again!</div>
-                  <input type="submit" className="submitButton" value="Submit" />
+                  <input type="submit" className="submitButton" value="Login" />
                </form>
             </div>
          )
@@ -84,11 +92,15 @@ class login extends Component {
       else{
          return (
             <div className="loginBox">
-               <img src="techClub.png" className="techClub" />
+                <div className="back">
+            <NavLink to="/" className="fas fa-arrow-left">
+             </NavLink>
+             </div>
+               <div className="techClub"><img src="tech.png" /></div>
                <form className="loginForm" onSubmit={this.handleSubmit} >
                   <div type="text" style={{ letterSpacing: 0.1 + 'em' }} >Please enter your key </div>
-                  <input type="text" placeholder="abcd1234" className="keyInput" name="code" onChange={this.handleChange} required />
-                  <input type="submit" className="submitButton" value="Submit" />
+                  <input type="text" placeholder="Enter Here" className="keyInput" name="code" onChange={this.handleChange} required />
+                  <input type="submit" className="submitButton" value="Login" disabled/>
                </form>
             </div>
          )

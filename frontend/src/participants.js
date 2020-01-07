@@ -23,7 +23,7 @@ class participants extends Component{
     
     this.state.targetId = localStorage.getItem('targetId');
     this.state.targetName = localStorage.getItem('targetCategoryName');
-    await fetch("http://172.26.4.31:5000/participant")
+    await fetch("http://52.76.67.93:5000/participant")
     .then(res=>res.json())
     .then(
         json=>{
@@ -67,7 +67,7 @@ class participants extends Component{
     }
     
      axios
-    .post('http://172.26.4.31:5000/vote', vote)
+    .post('http://52.76.67.93:5000/vote', vote)
     .then((res) =>  //console.log(res.data.result)
        localStorage.setItem("voted",res.data.result)
     )
@@ -86,7 +86,7 @@ class participants extends Component{
       }
      console.log(d)
       axios
-      .post('http://172.26.4.31:5000/deletevote',d)
+      .post('http://52.76.67.93:5000/deletevote',d)
       .then((res) => console.log(res)
       )
       .catch( err => {
@@ -105,7 +105,11 @@ class participants extends Component{
        return(
         <div> 
              <header>
-               <h2>{this.state.targetName}</h2>
+            <NavLink to="/" className="fas fa-arrow-left">
+             </NavLink>
+               <h2>
+                {this.state.targetName}
+                </h2>
              </header>
 
              <div className="container">
@@ -116,7 +120,7 @@ class participants extends Component{
                     <img src={list.image} alt="image"/>
                     <div >
                       <div>{list.name }</div>
-                        <button onClick={() => this.handleVote(list.cid,list.pid)} >Vote</button>
+                        <button className="voteBtn" onClick={() => this.handleVote(list.cid,list.pid)} >Vote</button>
                     </div >
                     </div>
                 ))
@@ -135,12 +139,15 @@ class participants extends Component{
              <div className="box4">
              <div className="cancel">
                  You have voted this category. Do you want to cancel vote?
-             <NavLink to="/" className="home">Back</NavLink>
-             <button className="btn" onClick={() => this.handleDeleteVote(localStorage.getItem("code"),this.state.targetId)}>Cancel Vote</button>
+            <div>
+             <NavLink to="/" className="homeCancel">Back</NavLink>
+             <button className="btnCancel" onClick={() => this.handleDeleteVote(localStorage.getItem("code"),this.state.targetId)}>Cancel Vote</button>
+             </div>
              </div>
              </div>
              
         </div>
+        
        )
    }
 

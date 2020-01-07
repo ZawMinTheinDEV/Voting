@@ -6,6 +6,8 @@ import App from './App'
 import login from './login'
 import feedback from './feedback'
 import participants from './participants'
+import quiz from './quiz'
+import map from './map'
 
 const routing = (
   <Router>
@@ -14,6 +16,8 @@ const routing = (
         <Route path="/login" component={login}/>
         <Route path="/feedback" component={feedback}/>
         <Route path="/participants" component={participants}/>
+        <Route path="/quiz" component={quiz}/>
+        <Route path="/map" component={map}/>
       </Switch>
   </Router>
 )

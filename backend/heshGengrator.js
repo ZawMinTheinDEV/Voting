@@ -1,15 +1,14 @@
-//var mysql = require('mysql');
+var mysql = require('mysql');
+const con = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    passowrd: '',
+    database: 'voting',
+    port: '3306'
+});
 
-// var con = mysql.createConnection({
-//     host: source.host,
-//     user: source.userName,
-//     passowrd: source.password,
-//     database: source.dbName,
-//   port: source.port 
-  
-// });
-var source=require('./ZMT/source');
-var con=source.dbConnection;
+// var source=require('./ZMT/source');
+// var con=source.dbConnection;
 con.connect(function (err) {
     if (err) throw err;
 -
