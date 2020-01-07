@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset='utf8'>
+    <title>Add category</title>
+    </head>
+    <body>
+        <form action="/add/participant" method="post" enctype="multipart/form-data">
+            Participant's name<input type="text" name="name"><br>
+            Participant's category<select name="cid">
+            <% result.forEach((category) => { %>
+                <option value=<%= category.cid %>><%= category.name %></option>
+           <% }) %>
+            
+                <%= typeof result %>
+
+            </select><br>
+            Participant's image<input type="file" name="image" ><br>
+            
+            <input type='submit' value="Add category">
+        </form>
+    </body>
+</html>

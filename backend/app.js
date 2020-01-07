@@ -5,10 +5,16 @@ const cors = require('cors');
 const app = express();
 const logger = require('morgan');
 //4dQXoIMKSjua
+const categoriesRoute = require("./routes/categoriesRoute");
+const categoryRoute = require("./routes/categoryRoute");
+const participantsRoute = require("./routes/participantsRoute");
+const con = require(`${__dirname}/databaseConnect`);
+const path=require('path');
+
 const multer = require('multer');
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: 'http://52.76.67.93:3000',
         credentials: true,
     })
 );
@@ -29,132 +35,129 @@ app.use((req, res, next) => {
 });
 
 
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-const con = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    passowrd: '',
-    database: 'voting',
-    port: '3306'
-});
+
+
 con.connect((err) => {
     if (err) throw err;
     console.log('Connection established');
 });
-const MIME_TYPES = {
-    'image/jpg': 'jpg',
-    'image/jpeg': 'jpg',
-    'image/png': 'png'
-};
 
-//http://52.76.67.93:3000/login
-const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, '../frontend/public/images');
-    },
-    filename: (req, file, callback) => {
-        const name = file.originalname.split(' ').join('_');
-        const extension = MIME_TYPES[file.mimetype];
-        callback(null, name);
-    }
-});
 
-const upload = multer({ storage: storage }).single('image');
 
-app.get('/category', (req, res, next) => {
-    const sql = "SELECT * FROM category";
+
+app.use(express.static(path.join(__dirname, "/public")));
+
+app.use("/categories", categoriesRoute);
+app.use("/category", categoryRoute);
+app.use("/participants", participantsRoute);
+app.post("/AdminDashboard/:cid", (req, res, next) => {
+    const sql = `SELECT pid,name,image,vote_count FROM participant WHERE cid = ${req.params.cid} DESC vote_count`;
     con.query(sql, (err, result, fields) => {
-        if (err) res.status(400).json({
-            err
-        })
-        console.log(typeof result);
+        if (err) throw err;
         res.status(200).json({
             result
         });
     });
 });
 
+app.use(express.static(__dirname + "images"));
+
+module.exports = app;
 
 
 
-app.get('/add/category', (req, res, next) => {
-    res.render('addCategory');
-})
-app.post('/add/category', (req, res, next) => {
-    //var catName = req.body.name;
-    //console.log(req);
-    upload(req, res, function (err) {
-        if (err)
-            return res.end(err);
-        else {
-            // console.log(req);
-            const image = `images/${req.file.filename}`;
-            const sql = `INSERT INTO category (name,image) VALUES ('${req.body.name}','${image}')`;
-            console.log(sql);
-            con.query(sql, (err, result, fields) => {
-                if (err) throw err;
-                console.log('Inserted successfully');
-                var sqlAlter = `ALTER TABLE voter ADD COLUMN ${req.body.name} VARCHAR(99) DEFAULT 'active'`;
-                con.query(sqlAlter, (err, result, fields) => {
-                    if (err) throw err;
-                    console.log('Alter voter table successfully');
-                })
-
-            });
-            res.end('File is uploaded');
-        }
-    });
 
 
-}
-);
+// app.get('/category', (req, res, next) => {
+//     const sql = "SELECT * FROM category";
+//     con.query(sql, (err, result, fields) => {
+//         if (err) res.status(400).json({
+//             err
+//         })
+//         console.log(typeof result);
+//         res.status(200).json({
+//             result
+//         });
+//     });
+// });
 
-app.get('/add/participant', (req, res, next) => {
-    var sql = "SELECT cid,name FROM category";
-    con.query(sql, (err, result, fields) => {
-        if (err) throw err;
-        res.render('addParticipant', { result });
-    })
 
-});
 
-app.post('/add/participant', (req, res, next) => {
 
-    upload(req, res, function (err) {
-        if (err) throw err;
-        else {
-            console.log(req.body);
-            const image = `images/${req.file.filename}`;
+// app.get('/add/category', (req, res, next) => {
+//     res.render('addCategory');
+// })
+// app.post('/add/category', (req, res, next) => {
+//     //var catName = req.body.name;
+//     //console.log(req);
+//     upload(req, res, function (err) {
+//         if (err)
+//             return res.end(err);
+//         else {
+//             // console.log(req);
+//             const image = `images/${req.file.filename}`;
+//             const sql = `INSERT INTO category (name,image) VALUES ('${req.body.name}','${image}')`;
+//             console.log(sql);
+//             con.query(sql, (err, result, fields) => {
+//                 if (err) throw err;
+//                 console.log('Inserted successfully');
+//                 var sqlAlter = `ALTER TABLE voter ADD COLUMN ${req.body.name} VARCHAR(99) DEFAULT 'active'`;
+//                 con.query(sqlAlter, (err, result, fields) => {
+//                     if (err) throw err;
+//                     console.log('Alter voter table successfully');
+//                 })
 
-            const sql = `INSERT INTO participant (cid,name,image) VALUES (${req.body.cid},'${req.body.name}','${image}')`;
-            console.log(sql);
-            con.query(sql, (err, result, fields) => {
-                if (err) throw err;
-                console.log('INSERTED participant successfully');
-            })
-            res.end('File is uploaded');
-        }
+//             });
+//             res.end('File is uploaded');
+//         }
+//     });
 
-    })
-});
 
-app.get('/participant', (req, res, next) => {
-    const sql = "SELECT pid,cid,name,image FROM participant";
-    con.query(sql, (err, result, fields) => {
-        if (err) throw err;
-        console.log(typeof result);
-        console.log(result);
-        res.status(200).json({
-            result
-        });
-    });
+// }
+// );
 
-    res.end;
-});
+// app.get('/add/participant', (req, res, next) => {
+//     var sql = "SELECT cid,name FROM category";
+//     con.query(sql, (err, result, fields) => {
+//         if (err) throw err;
+//         res.render('addParticipant', { result });
+//     })
+
+// });
+
+// app.post('/add/participant', (req, res, next) => {
+
+//     upload(req, res, function (err) {
+//         if (err) throw err;
+//         else {
+//             console.log(req.body);
+//             const image = `images/${req.file.filename}`;
+
+//             const sql = `INSERT INTO participant (cid,name,image) VALUES (${req.body.cid},'${req.body.name}','${image}')`;
+//             console.log(sql);
+//             con.query(sql, (err, result, fields) => {
+//                 if (err) throw err;
+//                 console.log('INSERTED participant successfully');
+//             })
+//             res.end('File is uploaded');
+//         }
+
+//     })
+// });
+
+// app.get('/participant', (req, res, next) => {
+//     const sql = "SELECT pid,cid,name,image FROM participant";
+//     con.query(sql, (err, result, fields) => {
+//         if (err) throw err;
+//         console.log(typeof result);
+//         console.log(result);
+//         res.status(200).json({
+//             result
+//         });
+//     });
+
+//     res.end;
+// });
 
 app.post('/vote', function (req, res) {
     console.log(req.body);

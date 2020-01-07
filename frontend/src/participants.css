@@ -14,9 +14,8 @@ body {
     top: 40px;
     margin-bottom: 20px;   
 }
-.container > .card + .card {
-    margin-top: 1.5em;
-}
+
+
 .card  {
     width: 100%;
     text-align: center;
@@ -27,7 +26,7 @@ body {
 }
 .card > img {
     width: 100%;
-    height: 65vh;
+
     border-top-right-radius: 0.3em;
     border-top-left-radius: 0.3em;
 }

@@ -1,0 +1,82 @@
+:root {
+    box-sizing: border-box;
+}
+
+body {background-color: #78b8cc26;}
+header {
+    font-size: 1.3rem;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+
+    padding: 1.5em;
+}
+
+.container > .add {
+    display: flex;
+}
+.add > div {
+    margin-left: auto;
+}
+.add > div > * + * { margin-left: 0.5em;}
+.add a {
+    flex: 1;
+    font-size: 1.4rem;
+    padding: 0.5em;
+    border: 0;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0.1em 0.1em 0.2em 0.1em #7b5e5dc7;
+    border-radius: 0.2em;
+}
+.add {
+    margin-bottom: 2em;
+}
+
+.categories {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap:1.5em;
+    position: relative;
+}
+
+.categories > div > img {
+    width: 100%;
+}
+.categories > div {
+    background-color: white;
+    box-shadow: 0em 0em 0.8em 0.2em #08100733;
+    transition: transform 0.1s ease-in;
+    text-decoration: none;
+    color: black;
+    position: relative;
+}
+.categories > div > a {
+    font-size: 1.5em;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    padding: 0.5em;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.3em;
+}
+
+.delete {
+    position: absolute;
+    right: 0.3em;
+    bottom: 0.3em;
+    background-color: red;
+    font-size: 1.3rem;
+    color: white;
+    border: 0;
+    border-radius: 0.3em;
+    padding: 0.2em;
+    box-shadow: 0em 0em 0.1em 0.1em rgba(96, 96, 96, 0.3);
+    cursor: pointer;
+}

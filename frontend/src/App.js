@@ -59,7 +59,7 @@ class App extends Component {
         && localStorage.getItem(localStorage.getItem("code")+"quiz") != "true"){
         return (
 
-            <div> 
+            <div className="wrapApp"> 
 
                 <div className="title-box">
                     {/* <div className="title">UCSM Fresher Welcome 2020</div> */}
@@ -117,7 +117,7 @@ class App extends Component {
         else if(localStorage.getItem("auth") == "true"){
             return (
     
-                <div>
+                <div className="wrapApp">
     
                     <div className="title-box">
                         {/* <div className="title">UCSM Fresher Welcome 2020</div> */}
@@ -166,7 +166,7 @@ class App extends Component {
         else{
             return (
 
-                <div>
+                <div className="wrapApp">
     
                     <div className="title-box">
                         {/* <div className="title">UCSM Fresher Welcome 2020</div> */}

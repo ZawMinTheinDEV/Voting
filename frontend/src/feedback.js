@@ -45,7 +45,7 @@ class feedback extends Component{
             <NavLink to="/" className="fas fa-arrow-left">
              </NavLink>
              </div>
-        <img src="tech.png" class="techClub"/>
+       
         <form  class="feedbackForm" onSubmit={this.handleSubmit}>
             <div type="text" style={{letterSpacing : 0.1+'em'}} >Please send us your feedback </div>
             <textarea type="text"  class="feedbackInput" onChange={this.handleChange} required /> 
@@ -64,7 +64,7 @@ class feedback extends Component{
                 <NavLink to="/" className="fas fa-arrow-left">
                  </NavLink>
                  </div>
-            <img src="tech.png" class="techClub"/>
+            
             <form  class="feedbackForm" onSubmit={this.handleSubmit}>
                 <div type="text" style={{letterSpacing : 0.1+'em'}} >Please send us your feedback </div>
                 <textarea type="text"  class="feedbackInput" onChange={this.handleChange} required /> 

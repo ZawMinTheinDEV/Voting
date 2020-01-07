@@ -3,8 +3,8 @@ body {
   margin:0;
   font-family: 'Poppins', sans-serif;
   text-align: center;
-
 }
+
 .title-box {
   background-image: url(welcome2.jpg);
   background-repeat: no-repeat;
@@ -13,6 +13,7 @@ body {
   height:300px;
   position: fixed;
   width:100%;
+  
 }
 
 .title {
